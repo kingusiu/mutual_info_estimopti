@@ -3,7 +3,6 @@ import sys
 import torch
 from torch import nn
 import torch.nn.functional as F
-import minfnet.util.runtime_util as rtut
 
 
 ##################################
@@ -15,22 +14,24 @@ acti_dd = { 'relu': nn.ReLU(), 'tanh': nn.Tanh(), 'sigmoid': nn.Sigmoid(), 'elu'
 
 class MI_Model(nn.Module):
 
-    def __init__(self, B_N, encoder_N=128, acti='relu', acti_out=None):
+    def __init__(self, B_N:int, encoder_N:int=128, hidden_N:int=32, acti:str='relu', acti_out:str=None, device:str='cpu'):
 
         super(MI_Model, self).__init__()
 
+        self.device = torch.device(device)
+
         # encoder for variable of interest / target (e.g. true energy)
         self.features_a = nn.Sequential(
-            nn.Linear(1, 32), acti_dd[acti],
-            nn.Linear(32, 32), acti_dd[acti],
-            nn.Linear(32, encoder_N), acti_dd[acti],
+            nn.Linear(1, hidden_N), acti_dd[acti],
+            nn.Linear(hidden_N, hidden_N), acti_dd[acti],
+            nn.Linear(hidden_N, encoder_N), acti_dd[acti],
         )
 
-        # encoder for informing variables (e.g. calo hits)
+        # encoder for informing variables (e.g. measured energy)
         self.features_b = nn.Sequential(
-            nn.Linear(B_N, 32), acti_dd[acti],
-            nn.Linear(32, 32), acti_dd[acti],
-            nn.Linear(32, encoder_N), acti_dd[acti],
+            nn.Linear(B_N, hidden_N), acti_dd[acti],
+            nn.Linear(hidden_N, hidden_N), acti_dd[acti],
+            nn.Linear(hidden_N, encoder_N), acti_dd[acti],
         )
 
         connected_mlp = []
@@ -49,12 +50,12 @@ class MI_Model(nn.Module):
         return self.fully_connected(x)
 
 
-def mutual_info(dep_ab, indep_ab, eps=1e-8):
+def mutual_info(dep_ab:torch.Tensor, indep_ab:torch.Tensor, eps:float=1e-8):
 
     return dep_ab.mean() - torch.log(indep_ab.exp().mean()+eps) # means over batch
 
 
-def train(model: MI_Model, dataloader, nb_epochs, optimizer, eps=1e-8):
+def train(model: MI_Model, dataloader, nb_epochs, optimizer, eps=1e-8) -> float:
 
     model.train()
 
@@ -66,7 +67,7 @@ def train(model: MI_Model, dataloader, nb_epochs, optimizer, eps=1e-8):
         
         for batch in dataloader:
             
-            batch_a, batch_b, batch_br, _ = [b.to(rtut.device) for b in batch]
+            batch_a, batch_b, batch_br, _ = [b.to(self.device) for b in batch]
 
             # apply the model: pass a & b and a & b_permuted
             dep_ab = model(batch_a, batch_b)
@@ -91,14 +92,14 @@ def train(model: MI_Model, dataloader, nb_epochs, optimizer, eps=1e-8):
     return acc_mi
 
 
-def test(model, dataloader, eps=1e-8):
+def test(model, dataloader, eps:float=1e-8) -> float:
 
     model.eval()
     test_acc_mi = 0.0
 
     for batch in dataloader:
 
-        batch_a, batch_b, batch_br, _ = [b.to(rtut.device) for b in batch]
+        batch_a, batch_b, batch_br, _ = [b.to(self.device) for b in batch]
 
         dep_ab = model(batch_a, batch_b)
         indep_ab = model(batch_a, batch_br)
