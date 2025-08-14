@@ -1,12 +1,6 @@
-# mutual_info_estimopti
+# Multi-Parameter Optimization with the Mutual information Neural Estimator
 
 This repository showcases optimization using the mutual information neural estimator.
-
-## Overview
-
-The main focus is on training and testing Mutual Information Neural Estimation (MINE) models for various optimization tasks.
-
-## Getting Started
 
 ### Prerequisites
 
