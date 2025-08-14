@@ -1,3 +1,12 @@
+# ########################################################################################
+# File: src/mi_estimopt/ml/mine.py
+# Date: 2023-10-30
+# Mutual Information Estimation using MINE (Mutual Information Neural Estimation)
+# Based on the original MINE paper: https://arxiv.org/abs/1801.04062
+# and on the implementation by Francois Fleuret
+# Author: Kinga Anna Wozniak
+# ########################################################################################
+
 import math
 import sys
 import torch
@@ -67,7 +76,7 @@ def train(model: MI_Model, dataloader, nb_epochs, optimizer, eps=1e-8) -> float:
         
         for batch in dataloader:
             
-            batch_a, batch_b, batch_br, _ = [b.to(self.device) for b in batch]
+            batch_a, batch_b, batch_br, _ = [b.to(model.device) for b in batch]
 
             # apply the model: pass a & b and a & b_permuted
             dep_ab = model(batch_a, batch_b)
@@ -86,8 +95,7 @@ def train(model: MI_Model, dataloader, nb_epochs, optimizer, eps=1e-8) -> float:
         acc_mi /= math.log(2)
         
         train_mi.append(acc_mi)
-        print(f'{e+1} {acc_mi:.04f}')
-        sys.stdout.flush()
+        print(f'{e+1} {acc_mi:.04f}\n')
 
     return acc_mi
 
@@ -99,7 +107,7 @@ def test(model, dataloader, eps:float=1e-8) -> float:
 
     for batch in dataloader:
 
-        batch_a, batch_b, batch_br, _ = [b.to(self.device) for b in batch]
+        batch_a, batch_b, batch_br, _ = [b.to(model.device) for b in batch]
 
         dep_ab = model(batch_a, batch_b)
         indep_ab = model(batch_a, batch_br)
