@@ -1,13 +1,20 @@
 import torch
 import numpy as np
-from heputl import logging as heplog
 
-#import import_config as imco
-
-#logger = heplog.get_logger(__name__, file_path=imco.log_file_path)
 
 
 class Optimizer():
+    """Optimizer for the surrogate model to find optimal design parameters.
+    Args:
+        theta_nominal (list): Nominal design parameters.
+        surrogate (nn.Module): Surrogate model to optimize.
+        std_dev (float): Standard deviation for the covariance matrix.
+        constraints (dict): Constraints for the optimization.
+        step_sz (float): Step size for the optimization.
+        lr (float): Learning rate for the optimizer.
+        epoch_n (int): Number of epochs for the optimization.
+        device (str): Device to run the model on ('cpu' or 'cuda').
+    """
 
     def __init__(self, theta_nominal, surrogate, std_dev=1.0, constraints=None, step_sz=8e-1, lr=0.01, epoch_n=30, device='cpu'):
         self.theta = torch.tensor(theta_nominal,dtype=torch.float32).to(device)
@@ -28,7 +35,12 @@ class Optimizer():
 
     
     def add_constraint_penalty(self):
-        # keep the size of the detector within imposed size limits
+        """Add penalty to the loss function to enforce constraints.
+            all constraints have to be defined in the constructor as a dictionary
+            a check for the dictionary keys has to be added in this function
+            currently 'sum_params' is implemented
+        """
+       
         curr_theta = self.theta.clone().detach()
         total_magnitude_loss = 0
         if self.constraints is not None:
@@ -63,7 +75,7 @@ class Optimizer():
             theta_next = self.theta.clone().detach().cpu().numpy()
             if ((theta_next - thetas[-1])**2).sum() < 1e-5: # convergence
                 break
-            if not self.is_local(theta_next):
+            if not self.is_local(theta_next): # outside of local region
                 break  
            
         return np.array(thetas)
