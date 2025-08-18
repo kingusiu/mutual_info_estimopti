@@ -20,7 +20,7 @@ pip install -r requirements.txt
 The core scripts are located in the `scripts/` directory.
 
 
-# Demo Script: `train_test_mine_two_param_noisy_channel.py`
+## Demo Script: `train_test_mine_two_param_noisy_channel.py`
 
 This script demonstrates how to train and evaluate the Mutual Information Neural Estimation (MINE) model on a synthetic two-parameter noisy channel dataset.
 
