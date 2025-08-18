@@ -4,11 +4,12 @@ import logging
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
+import torch.optim as Toptim
 import matplotlib.pyplot as plt
 import yaml
 from mi_estimopt.ml import mine
 from mi_estimopt.ml import surrogate as surr
+from mi_estimopt.ml import optimizer as surr_opt
 from mi_estimopt.util import data_util as daut
 
 
@@ -57,7 +58,7 @@ def main():
     surr_model = surr.MLP_Surrogate(N_feat=2,device=device)
 
     metric = nn.MSELoss()
-    surr_opt = optim.Adam(surr_model.parameters(), lr=0.05)
+    surr_opt = Toptim.Adam(surr_model.parameters(), lr=0.05)
 
 
     #****************************************************************#
@@ -85,9 +86,9 @@ def main():
     #****************************************************************#
     #                       train surrogate model
 
-    surr_opt = optim.Adam(surr_model.parameters(), lr=config['lr_surr'])
+    surr_opt = Toptim.Adam(surr_model.parameters(), lr=config['lr_surr'])
 
-    scheduler = optim.lr_scheduler.StepLR(surr_opt, step_size=20, gamma=0.1)
+    scheduler = Toptim.lr_scheduler.StepLR(surr_opt, step_size=20, gamma=0.1)
 
     logger.info('training surrogate model')
 
@@ -99,7 +100,7 @@ def main():
     #                       find theta with best MI
     #****************************************************************#
 
-    surr_optimizer = optm.Optimizer(surr_dataset=dataset, surrogate=surr_model, epoch_n=300)
+    surr_optimizer = surr_opt.Optimizer(surr_dataset=dataset, surrogate=surr_model, epoch_n=300)
     thetas = surr_optimizer.optimize()
 
     # get mutual information for thetas
