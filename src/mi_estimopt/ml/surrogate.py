@@ -8,6 +8,13 @@ activation_functions = {
 }
 
 class MLP_Surrogate(nn.Module):
+    """MLP surrogate model for estimating mutual information from design parameters.
+    Args:
+        N_feat (int): Number of input features.
+        acti (str): Activation function to use in the hidden layers.
+        N_hidden (int): Number of neurons in the hidden layers.
+        device (str): Device to run the model on ('cpu' or 'cuda').
+    """
     
     def __init__(self, N_feat=1, acti='elu', N_hidden=10, device='cpu'):
 
@@ -39,7 +46,7 @@ def train_surrogate(surr_model, surr_opt, surr_metric, dataloader, data_valid, s
 
     ### training
 
-    for epoch in range(n_epochs):
+    for _ in range(n_epochs):
         epoch_loss = 0
         surr_model.train()
 

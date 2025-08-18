@@ -45,6 +45,21 @@ The script expects a configuration YAML file (default: `config/noisy_channel.yam
 
 ---
 
+## Demo Script: `train_surrogate_with_optimizer.py`
+
+This script demonstrates how to use a surrogate model to optimize mutual information with respect to channel parameters, following these main steps:
+
+1. **Loads mutual information results** previously estimated by the MINE model for different parameter settings from disk.
+2. **Trains a surrogate model** (MLP) to learn the mapping from channel parameters (theta) to mutual information values.
+3. **Validates the surrogate** using a held-out validation set and visualizes the fit between parameters and mutual information.
+4. **Optimizes the parameters** using the trained surrogate model and a custom optimizer to find the parameter values that maximize mutual information, subject to constraints.
+5. **Visualizes the optimization results** by plotting the optimized parameters and their corresponding mutual information values.
+
+The script expects configuration and result files to be present (see the `config/` and `results/` directories).  
+It is useful for exploring how surrogate modeling and optimization can be combined with mutual information estimation in experimental design or parameter tuning
+
+---
+
 ## Configuration
 
 Edit the YAML config file to set:
