@@ -2,6 +2,12 @@
 
 This repository showcases optimization using the mutual information neural estimator.
 
+## Reference
+
+For more details, see the reference publication:  
+K.A. Wozniak et al., *End-to-end optimal detector design with mutual information surrogates*.  
+[arXiv:2503.14342](https://arxiv.org/abs/2503.14342)
+
 ### Prerequisites
 
 - Python 3.8+

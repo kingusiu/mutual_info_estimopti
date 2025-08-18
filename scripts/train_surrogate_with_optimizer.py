@@ -1,5 +1,7 @@
+# Author: Kinga Anna Wozniak
+# Date: 2024-06-09
+# Description: Train surrogate model and optimize mutual information for noisy channel experiments.
 
-import argparse
 import logging
 import numpy as np
 import torch
@@ -7,7 +9,6 @@ import torch.nn as nn
 import torch.optim as Toptim
 import matplotlib.pyplot as plt
 import yaml
-from mi_estimopt.ml import mine
 from mi_estimopt.ml import surrogate as surr
 from mi_estimopt.ml import optimizer as surr_opt
 from mi_estimopt.util import data_util as daut

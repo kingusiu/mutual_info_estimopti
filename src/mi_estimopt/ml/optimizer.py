@@ -1,3 +1,8 @@
+# Author: Kinga Anna Wozniak
+# Date: 2024-06-09
+# Description: optimizer for mutual information surrogate. Based on template by Jan Kieseler.
+
+
 import torch
 import numpy as np
 
