@@ -1,6 +1,6 @@
 # ########################################################################################
 # File: src/mi_estimopt/ml/mine.py
-# Date: 2023-10-30
+# Date: 2025-03-18
 # Mutual Information Estimation using MINE (Mutual Information Neural Estimation)
 # Based on the original MINE paper: https://arxiv.org/abs/1801.04062
 # and on the implementation by Francois Fleuret

@@ -1,5 +1,5 @@
 # Author: Kinga Anna Wozniak
-# Date: 2024-06-09
+# Date: 2025-03-18
 # Description: optimizer for mutual information surrogate. Based on template by Jan Kieseler.
 
 

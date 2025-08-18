@@ -3,7 +3,7 @@
 # It is used to train and test a mutual information model on a noisy channel dataset.
 # The script generates samples, trains the model, and evaluates its performance.
 # Author: Kinga Anna Wozniak
-# Date: 2023-10-30
+# Date: 2025-03-18
 ########################################################################################
 
 import os

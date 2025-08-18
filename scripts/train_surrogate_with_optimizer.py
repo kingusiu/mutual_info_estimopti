@@ -1,5 +1,5 @@
 # Author: Kinga Anna Wozniak
-# Date: 2024-06-09
+# Date: 2025-03-18
 # Description: Train surrogate model and optimize mutual information for noisy channel experiments.
 
 import logging
