@@ -22,6 +22,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
 from mi_estimopt.dats import input_generator as inge
 from mi_estimopt.ml import mine
+from mi_estimopt.util import data_util as daut
 
 
 
@@ -87,15 +88,6 @@ def make_two_theta_grid(theta_min, theta_max, theta_num):
     return tt1, tt2
 
 
-def make_tensor_dataset(*np_arrays):
-    '''
-    Convert numpy arrays to torch tensors and save to torch dataset.
-    '''
-    tensors = [torch.from_numpy(arr) for arr in np_arrays]
-    tensors = [t.unsqueeze(1) if t.ndim == 1 else t for t in tensors]
-    return torch.utils.data.TensorDataset(*tensors)
-
-
 def main():
 
     #****************************************#
@@ -146,7 +138,7 @@ def main():
         data_dict['tt1_train'].append(thetas_train[:,0])
         data_dict['tt2_train'].append(thetas_train[:,1])
 
-        dataset_train = make_tensor_dataset(A_train, B_train, thetas_train)
+        dataset_train = daut.make_tensor_dataset(A_train, B_train, thetas_train)
         train_dataloader = torch.utils.data.DataLoader(dataset_train, batch_size=config['batch_size'], shuffle=True)
 
         #****************************************#
@@ -182,7 +174,7 @@ def main():
         data_dict['tt1_test'].append(thetas_test[:, 0])
         data_dict['tt2_test'].append(thetas_test[:, 1])
 
-        dataset_test = make_tensor_dataset(A_test, B_test, thetas_test)
+        dataset_test = daut.make_tensor_dataset(A_test, B_test, thetas_test)
         test_dataloader = torch.utils.data.DataLoader(dataset_test, batch_size=config['batch_size'], shuffle=False)
         #****************************************#
         #               test model
