@@ -200,6 +200,10 @@ def main():
     plot_histogram(data_dict['tt1_test'], tt1_test.flatten(), plot_name='t1_test_histogram')
     plot_histogram(data_dict['tt2_test'], tt2_test.flatten(), plot_name='t2_test_histogram')
 
+    # Save results
+    result_ll = np.array(result_ll)
+    np.savez(os.path.join(result_dir, 'result_ll_test.npz'), theta1=result_ll[:, 0],theta2=result_ll[:, 1], mi=result_ll[:, 2])
+
 
 if __name__ == "__main__":
     main()
