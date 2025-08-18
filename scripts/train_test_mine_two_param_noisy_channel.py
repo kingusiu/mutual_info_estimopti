@@ -107,6 +107,8 @@ def main():
         config = yaml.load(f, Loader=yaml.FullLoader)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    result_dir = '../results/noisy_channel_test/' + 'run_' + str(config['run_n'])
+    os.makedirs(result_dir, exist_ok=True)
 
 
     #****************************************#
