@@ -106,6 +106,8 @@ def main():
     with open(config_path, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
 
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 
     #****************************************#
     #               build model 
@@ -115,7 +117,7 @@ def main():
 
     # create model
     model = mine.MI_Model(B_N=B_N, acti=config['activation'], acti_out=config['activation_out'])
-    model.to(rtut.device)
+    model.to(device)
 
     # create optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'])

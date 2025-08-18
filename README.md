@@ -1,4 +1,4 @@
-# Multi-Parameter Optimization with the Mutual information Neural Estimator
+# Multi-Parameter Optimization with the Mutual Information Neural Estimator
 
 This repository showcases optimization using the mutual information neural estimator.
 
